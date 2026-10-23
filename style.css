@@ -1,6 +1,5 @@
 /* Created by Archimedes */
 
-/* Basic page styling */
 * {
     box-sizing: border-box;
 }
@@ -18,136 +17,256 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background: radial-gradient(circle, #101f40 0%, #050816 70%, #02030a 100%);
+    background:
+        radial-gradient(ellipse at 50% 45%, #122858 0%, #080f25 45%, #02040c 100%);
     perspective: 1000px;
+    color: #eafaff;
 }
 
-/* 3D viewing area */
+/* Atmospheric background glow */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 25%, rgba(0, 110, 255, .12), transparent 35%),
+        radial-gradient(circle at 80% 75%, rgba(150, 0, 255, .12), transparent 35%);
+    animation: backgroundPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundPulse {
+    from { opacity: .45; }
+    to   { opacity: 1; }
+}
+
+/* Viewing area */
 .scene {
+    position: relative;
     width: 200px;
     height: 200px;
-
     perspective: 1000px;
+    z-index: 1;
 }
 
-/* The cube itself */
+/* Cube rotates only after the assembly sequence */
 #cube {
     position: relative;
-
     width: 200px;
     height: 200px;
-
     transform-style: preserve-3d;
-
-    animation: rotateCube 10s infinite linear;
-
-    will-change: transform;
+    transform: rotateX(-20deg) rotateY(-25deg);
+    animation: cubeMotion 9s 4.8s ease-in-out infinite;
 }
 
-/* Common styling for all six faces */
+/* Shared face styling */
 #cube > div {
     position: absolute;
     width: 200px;
     height: 200px;
-
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    border: 2px solid #00d9ff;
+    justify-content: center;
+    border: 2px solid var(--glow);
     border-radius: 12px;
-
+    background: var(--glass);
     box-shadow:
-        0 0 8px #00d9ff,
-        0 0 20px rgba(0, 217, 255, 0.7),
-        inset 0 0 20px rgba(0, 217, 255, 0.15);
+        0 0 8px var(--glow),
+        0 0 22px var(--glow),
+        inset 0 0 25px rgba(255, 255, 255, .08);
+    backface-visibility: visible;
 
-    backdrop-filter: blur(5px);
+    /* Keep the faces hidden until their introduction starts */
+    opacity: 0;
+    animation: assembleFace 1.15s cubic-bezier(.16, .8, .3, 1) forwards;
 }
 
+/* Front face */
 .side1 {
-    background: rgba(0, 255, 100, 0.25);
-    transform: translateZ(100px);
-    border-color: #00ff66 !important;
+    --glow: #00ff80;
+    --glass: rgba(0, 255, 100, .20);
+    --end: translateZ(100px);
+    --start: translateZ(450px) rotateY(35deg);
+    transform: var(--end);
+    animation-delay: .2s !important;
 }
 
+/* Back face */
 .side2 {
-    background: rgba(0, 220, 255, 0.25);
-    transform: rotateY(180deg) translateZ(100px);
-    border-color: #00eaff !important;
+    --glow: #00eaff;
+    --glass: rgba(0, 220, 255, .20);
+    --end: rotateY(180deg) translateZ(100px);
+    --start: rotateY(180deg) translateZ(-400px);
+    transform: var(--end);
+    animation-delay: .85s !important;
 }
 
+/* Right face */
 .side3 {
-    background: rgba(255, 0, 200, 0.25);
-    transform: rotateY(90deg) translateZ(100px);
-    border-color: #ff00d4 !important;
+    --glow: #ff00d4;
+    --glass: rgba(255, 0, 200, .20);
+    --end: rotateY(90deg) translateZ(100px);
+    --start: rotateY(90deg) translateZ(450px);
+    transform: var(--end);
+    animation-delay: 1.5s !important;
 }
 
+/* Left face */
 .side4 {
-    background: rgba(255, 40, 70, 0.25);
-    transform: rotateY(-90deg) translateZ(100px);
-    border-color: #ff1744 !important;
+    --glow: #ff355e;
+    --glass: rgba(255, 40, 70, .20);
+    --end: rotateY(-90deg) translateZ(100px);
+    --start: rotateY(-90deg) translateZ(450px);
+    transform: var(--end);
+    animation-delay: 2.15s !important;
 }
 
+/* Top face */
 .side5 {
-    background: rgba(255, 220, 0, 0.25);
-    transform: rotateX(90deg) translateZ(100px);
-    border-color: #ffe600 !important;
+    --glow: #ffe600;
+    --glass: rgba(255, 220, 0, .20);
+    --end: rotateX(90deg) translateZ(100px);
+    --start: rotateX(90deg) translateZ(450px);
+    transform: var(--end);
+    animation-delay: 2.8s !important;
 }
 
+/* Bottom face */
 .side6 {
-    background: rgba(80, 70, 255, 0.25);
-    transform: rotateX(-90deg) translateZ(100px);
-    border-color: #5145ff !important;
+    --glow: #7165ff;
+    --glass: rgba(80, 70, 255, .20);
+    --end: rotateX(-90deg) translateZ(100px);
+    --start: rotateX(-90deg) translateZ(450px);
+    transform: var(--end);
+    animation-delay: 3.45s !important;
+}
+
+/* Faces fly into position */
+@keyframes assembleFace {
+    0% {
+        opacity: 0;
+        transform: var(--start);
+        filter: brightness(2);
+    }
+
+    75% {
+        opacity: 1;
+        filter: brightness(1.7);
+    }
+
+    100% {
+        opacity: 1;
+        transform: var(--end);
+        filter: brightness(1);
+    }
+}
+/* The entire cube floats and rotates rhythmically */
+@keyframes cubeMotion {
+    0%, 100% {
+        transform: translateY(0) rotateX(-20deg) rotateY(0deg);
+    }
+
+    25% {
+        transform: translateY(-22px) rotateX(5deg) rotateY(90deg);
+    }
+
+    50% {
+        transform: translateY(0) rotateX(20deg) rotateY(180deg);
+    }
+
+    75% {
+        transform: translateY(-22px) rotateX(-5deg) rotateY(270deg);
+    }
 }
 
 /* Flower emojis */
 #cube p {
     margin: 0;
-
     font-size: 90px;
     line-height: 1;
-
-    filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.2));
-
+    text-align: center;
+    filter: drop-shadow(0 0 9px rgba(255, 255, 255, .65));
     user-select: none;
 }
 
-/* Continuous 3D rotation */
-@keyframes rotateCube {
-    0% {
-        transform: rotateX(-20deg) rotateY(0deg);
-    }
-
-    100% {
-        transform: rotateX(340deg) rotateY(360deg);
-    }
+/* Music controls */
+.music-control {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 217, 255, .45);
+    border-radius: 40px;
+    background: rgba(4, 13, 35, .85);
+    box-shadow: 0 0 20px rgba(0, 150, 255, .15);
+    backdrop-filter: blur(12px);
+    font: 13px/1.2 Arial, sans-serif;
+    z-index: 5;
 }
 
-/* Responsive sizing for smaller screens */
+.music-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #536477;
+    flex-shrink: 0;
+}
+
+.music-control.playing .music-indicator {
+    background: #00ffb3;
+    box-shadow: 0 0 10px #00ffb3;
+    animation: musicPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes musicPulse {
+    from { opacity: .45; }
+    to   { opacity: 1; }
+}
+
+#musicButton {
+    border: 1px solid #00d9ff;
+    border-radius: 24px;
+    padding: 9px 14px;
+    background: rgba(0, 217, 255, .12);
+    color: #eafaff;
+    cursor: pointer;
+    font: inherit;
+    transition: background .2s, box-shadow .2s;
+}
+
+#musicButton:hover {
+    background: rgba(0, 217, 255, .25);
+    box-shadow: 0 0 12px rgba(0, 217, 255, .4);
+}
+
+/* Smaller screens */
 @media (max-width: 500px) {
     .scene {
-        transform: scale(0.8);
+        transform: scale(.8);
+    }
+
+    .music-control {
+        bottom: 18px;
+        gap: 8px;
+        padding: 10px;
     }
 }
 
-/* Respect reduced-motion preferences */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
     #cube {
         animation: none;
         transform: rotateX(-20deg) rotateY(-25deg);
     }
-}
 
-#cube p {
-    margin: 0;
-    font-size: 90px;
-    line-height: 1;
-    text-align: center;
-
-    filter:
-        drop-shadow(0 0 8px rgba(255, 255, 255, 0.7))
-        drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
-
-    user-select: none;
+    body::before,
+    .music-indicator {
+        animation: none;
+    }
 }
