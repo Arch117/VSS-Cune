@@ -370,7 +370,7 @@ body::before {
 /* Responsive positioning */
 @media (max-width: 500px) {
     .music-control {
-        top: calc(50% - 230px);
+        top: calc(50% - 290px);
     }
 
     .developer-signature {
