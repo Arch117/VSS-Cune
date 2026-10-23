@@ -192,7 +192,7 @@ body::before {
 /* Music controls positioned closer to the cube */
 .music-control {
     position: fixed;
-    top: calc(50% - 240px);
+    top: calc(50% - 290px);
     left: 50%;
     transform: translateX(-50%);
 
@@ -257,7 +257,7 @@ body::before {
 /* Developer signature */
 .developer-signature {
     position: fixed;
-    top: calc(50% + 220px);
+    top: calc(50% + 180px);
     left: 50%;
     transform: translateX(-50%);
 
