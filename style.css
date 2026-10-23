@@ -192,7 +192,7 @@ body::before {
 /* Music controls positioned closer to the cube */
 .music-control {
     position: fixed;
-    top: calc(50% - 290px);
+    top: calc(50% - 330px);
     left: 50%;
     transform: translateX(-50%);
 

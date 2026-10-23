@@ -118,7 +118,7 @@ async function startMusic() {
         audioContext = new AudioContextClass();
 
         masterGain = audioContext.createGain();
-        masterGain.gain.value = 1.0;
+        masterGain.gain.value = 2.2;
         masterGain.connect(audioContext.destination);
     }
 
