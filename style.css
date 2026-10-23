@@ -192,7 +192,7 @@ body::before {
 /* Music controls positioned closer to the cube */
 .music-control {
     position: fixed;
-    top: calc(50% - 330px);
+    top: calc(50% - 290px);
     left: 50%;
     transform: translateX(-50%);
 
@@ -370,7 +370,7 @@ body::before {
 /* Responsive positioning */
 @media (max-width: 500px) {
     .music-control {
-        top: calc(50% - 155px);
+        top: calc(50% - 230px);
     }
 
     .developer-signature {
