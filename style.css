@@ -189,23 +189,29 @@ body::before {
     user-select: none;
 }
 
-/* Music controls */
+/* Music controls positioned closer to the cube */
 .music-control {
     position: fixed;
-    bottom: 28px;
+    top: calc(50% - 240px);
     left: 50%;
     transform: translateX(-50%);
+
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
+
     width: max-content;
     max-width: calc(100vw - 24px);
-    padding: 12px 16px;
-    border: 1px solid rgba(0, 217, 255, .45);
+    padding: 11px 16px;
+
+    border: 1px solid rgba(0, 217, 255, 0.5);
     border-radius: 40px;
-    background: rgba(4, 13, 35, .85);
-    box-shadow: 0 0 20px rgba(0, 150, 255, .15);
+
+    background: rgba(4, 13, 35, 0.85);
+    box-shadow: 0 0 20px rgba(0, 150, 255, 0.2);
     backdrop-filter: blur(12px);
+
     font: 13px/1.2 Arial, sans-serif;
     z-index: 5;
 }
@@ -213,9 +219,9 @@ body::before {
 .music-indicator {
     width: 8px;
     height: 8px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: #536477;
-    flex-shrink: 0;
 }
 
 .music-control.playing .music-indicator {
@@ -225,7 +231,7 @@ body::before {
 }
 
 @keyframes musicPulse {
-    from { opacity: .45; }
+    from { opacity: 0.45; }
     to   { opacity: 1; }
 }
 
@@ -233,40 +239,156 @@ body::before {
     border: 1px solid #00d9ff;
     border-radius: 24px;
     padding: 9px 14px;
-    background: rgba(0, 217, 255, .12);
+
+    background: rgba(0, 217, 255, 0.12);
     color: #eafaff;
+
     cursor: pointer;
     font: inherit;
-    transition: background .2s, box-shadow .2s;
+
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 #musicButton:hover {
-    background: rgba(0, 217, 255, .25);
-    box-shadow: 0 0 12px rgba(0, 217, 255, .4);
+    background: rgba(0, 217, 255, 0.25);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
 }
 
-/* Smaller screens */
+/* Developer signature */
+.developer-signature {
+    position: fixed;
+    top: calc(50% + 220px);
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: max-content;
+    max-width: calc(100vw - 24px);
+
+    text-align: center;
+    font-family: "Arial", sans-serif;
+    z-index: 4;
+
+    animation: signatureReveal 1.2s 4.5s both;
+}
+
+.signature-line {
+    display: block;
+    width: 70px;
+    height: 2px;
+    margin: 0 auto 12px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        #7b61ff,
+        transparent
+    );
+
+    box-shadow: 0 0 12px #00d9ff;
+}
+
+.developer-signature p {
+    margin: 0 0 5px;
+
+    color: #d8eaff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+.signature-heart {
+    color: #ff3d81;
+    text-shadow: 0 0 10px #ff3d81;
+    animation: heartPulse 1.3s ease-in-out infinite;
+}
+
+.developer-signature h2 {
+    margin: 0;
+
+    color: #ffffff;
+    font-size: clamp(20px, 4vw, 27px);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 12px #00bfff,
+        0 0 25px #006aff;
+
+    animation: nameGlow 2.5s ease-in-out infinite alternate;
+}
+
+.signature-tagline {
+    display: block;
+    margin-top: 9px;
+
+    color: #74cfff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+@keyframes signatureReveal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes heartPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes nameGlow {
+    from {
+        text-shadow:
+            0 0 5px #ffffff,
+            0 0 12px #00bfff;
+    }
+
+    to {
+        text-shadow:
+            0 0 8px #ffffff,
+            0 0 18px #00bfff,
+            0 0 30px #006aff;
+    }
+}
+
+/* Responsive positioning */
 @media (max-width: 500px) {
-    .scene {
-        transform: scale(.8);
+    .music-control {
+        top: calc(50% - 155px);
     }
 
-    .music-control {
-        bottom: 18px;
-        gap: 8px;
-        padding: 10px;
+    .developer-signature {
+        top: calc(50% + 185px);
     }
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-    #cube {
-        animation: none;
-        transform: rotateX(-20deg) rotateY(-25deg);
+    .developer-signature p {
+        font-size: 10px;
+        letter-spacing: 3px;
     }
 
-    body::before,
-    .music-indicator {
-        animation: none;
+    .developer-signature h2 {
+        font-size: 21px;
+    }
+
+    .signature-tagline {
+        font-size: 8px;
+        letter-spacing: 2px;
     }
 }
