@@ -1,0 +1,153 @@
+/* Created by Archimedes */
+
+/* Basic page styling */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: radial-gradient(circle, #101f40 0%, #050816 70%, #02030a 100%);
+    perspective: 1000px;
+}
+
+/* 3D viewing area */
+.scene {
+    width: 200px;
+    height: 200px;
+
+    perspective: 1000px;
+}
+
+/* The cube itself */
+#cube {
+    position: relative;
+
+    width: 200px;
+    height: 200px;
+
+    transform-style: preserve-3d;
+
+    animation: rotateCube 10s infinite linear;
+
+    will-change: transform;
+}
+
+/* Common styling for all six faces */
+#cube > div {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid #00d9ff;
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 8px #00d9ff,
+        0 0 20px rgba(0, 217, 255, 0.7),
+        inset 0 0 20px rgba(0, 217, 255, 0.15);
+
+    backdrop-filter: blur(5px);
+}
+
+.side1 {
+    background: rgba(0, 255, 100, 0.25);
+    transform: translateZ(100px);
+    border-color: #00ff66 !important;
+}
+
+.side2 {
+    background: rgba(0, 220, 255, 0.25);
+    transform: rotateY(180deg) translateZ(100px);
+    border-color: #00eaff !important;
+}
+
+.side3 {
+    background: rgba(255, 0, 200, 0.25);
+    transform: rotateY(90deg) translateZ(100px);
+    border-color: #ff00d4 !important;
+}
+
+.side4 {
+    background: rgba(255, 40, 70, 0.25);
+    transform: rotateY(-90deg) translateZ(100px);
+    border-color: #ff1744 !important;
+}
+
+.side5 {
+    background: rgba(255, 220, 0, 0.25);
+    transform: rotateX(90deg) translateZ(100px);
+    border-color: #ffe600 !important;
+}
+
+.side6 {
+    background: rgba(80, 70, 255, 0.25);
+    transform: rotateX(-90deg) translateZ(100px);
+    border-color: #5145ff !important;
+}
+
+/* Flower emojis */
+#cube p {
+    margin: 0;
+
+    font-size: 90px;
+    line-height: 1;
+
+    filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.2));
+
+    user-select: none;
+}
+
+/* Continuous 3D rotation */
+@keyframes rotateCube {
+    0% {
+        transform: rotateX(-20deg) rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateX(340deg) rotateY(360deg);
+    }
+}
+
+/* Responsive sizing for smaller screens */
+@media (max-width: 500px) {
+    .scene {
+        transform: scale(0.8);
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    #cube {
+        animation: none;
+        transform: rotateX(-20deg) rotateY(-25deg);
+    }
+}
+
+#cube p {
+    margin: 0;
+    font-size: 90px;
+    line-height: 1;
+    text-align: center;
+
+    filter:
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.7))
+        drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
+
+    user-select: none;
+}
